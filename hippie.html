@@ -192,6 +192,7 @@
 <script id="jqs" type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="http://masonry.desandro.com/jquery.masonry.min.js"></script>
 <script>
+  // Alendri's setup code goes up here
   $(function(){
     
     $('#list').masonry({
@@ -204,7 +205,55 @@
       $(this).toggleClass("opendetails");
 	  $('#list').masonry('reload');
   });
+
+  ///////////////////////////////////////
+
+  // Hippietrail's code goes down here
+  $(function hippieTrail() {
+    var riobardParams = $.param({
+      q: '',
+      fmt: 'JSON'
+    }),
+    riobardUrl = 'http://airportcode.riobard.com/search' + '?' + riobardParams,
+    yqlParams = $.param({
+      q:      "select * from json where url=\"" + riobardUrl + "\"",
+      format: "json",
+    }),
+    yqlUrl = "http://query.yahooapis.com/v1/public/yql",
+    codeToInfo = {};
+
+    // if no CORS support then turn into a JSONP request
+    if (!$.support.cors) {
+      yqlParams.callback = '?';
+    }
+
+    $.ajax(yqlUrl, {
+      data: yqlParams,
+      dataType: 'json',
+      success: function(data, textStatus, jqXHR) {
+        var $airportDivs = $('#list .airport');
+
+        $.each( data.query.results.json.json, function(i, e) {
+          codeToInfo[e.code] = { name: e.name, location: e.location };
+        });
+
+        $airportDivs.each(function(i, e) {
+          var $code = $(e).find('#code'),
+          $name1 = $(e).find('#name1'),
+          $name2 = $(e).find('#name2'),
+          $location = $(e).find('#location');
+
+          $code.text(data.query.results.json.json[i].code);
+          $name1.text("(no Stack Exchange data yet)");
+          $name2.text(data.query.results.json.json[i].name);
+          $location.text(data.query.results.json.json[i].location);
+        });
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('error', [textStatus, errorThrown]);
+      }
+    });
+  });
 </script>
 </body>
 </html>
-
