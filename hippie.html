@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -49,7 +49,7 @@
 			  transition-property: left, right, top;
 	}
 	
-	#list { position:absolute; left:50%; margin-left:-45%; width:90%; top:35px; font-weight:300; }
+	#list { position:absolute; left:50%; margin-left:-45%; width:90%; top:5px; font-weight:300; }
 	#list .details {  text-align:left; }
 	#list #code { font-weight:600; height:25px; line-height:25px; }
 	#list #distances { font-weight:600; margin-left:10px; border-top:1px solid RGBA(250,150,1,0.8); margin-top:3px; font-size:14px; }
@@ -60,13 +60,10 @@
 	.opendetails { width:278px; height:auto; -webkit-box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.4); font-size:14px; }
 	.airport:hover { -webkit-box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.6); box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.6); border:1px solid RGBA(250,150,1,0.8); }
 	
-	
-	.btn { padding:5px; cursor:pointer; border:1px solid RGBA(0,0,70,0.6); border-radius:2px; width:120px; text-align:center; -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); height:18px; line-height:18px; font-size:14px; }
+	#btnoutercontainer { float:left; position:relative; top:0px; left:50%; height:35px; }
+	#btninnercontainer { float:left; position:relative; margin-left:-50%; top:5px; }
+	.btn { float:left; position:relative; padding:5px; cursor:pointer; border:1px solid RGBA(0,0,70,0.6); border-radius:2px; text-align:center; -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); height:18px; line-height:18px; font-size:14px; margin-left:6px; }
 	.btn:hover { -webkit-box-shadow: 0px 0px 3px 0px rgba(100, 0, 100, 0.6); box-shadow: 0px 0px 3px 0px rgba(100, 0, 100, 0.6); border:1px solid RGBA(1,150,250,0.8); }
-	#btnShowAll { position:absolute; top:3px; left:50%; margin-left:3px; }
-	#btnShowNone { position:absolute; top:3px; right:50%; margin-right:3px; }
-	#btnShowOffending { position:absolute; top:3px; left:50%; margin-left:140px; }
-	#btnOther { position:absolute; top:3px; right:50%; margin-right:140px; }
 	
 	@media only screen and (min-width: 769px) {
 		#headerbg { position:fixed; top:0px; left:50%; width:100%; height:350px; background-color:black; overflow:hidden; margin-left:-50%; }
@@ -97,10 +94,13 @@
 
 <div style="clear:both;"></div>
 <div id="whitebg">
-	<div id="btnShowAll" class="btn">Expand all</div>
-    <div id="btnShowNone" class="btn">Close all</div>
-    <div id="btnShowOffending" class="btn">Show offending</div>
-    <div id="btnOther" class="btn">Other btw</div>
+	<div id="btnoutercontainer"><div id="btninnercontainer">
+        <div id="btnShowAll" class="btn">Expand all</div>
+        <div id="btnShowNone" class="btn">Close all</div>
+        <div id="btnShowOffending" class="btn">Show offending</div>
+        <div id="btnLoad" class="btn">Load tags</div>
+    </div></div>
+    <div style="clear:both;"></div>
     <div id="list">
         <div id="airport" class="airport">
             <div id="code">AKL</div>
