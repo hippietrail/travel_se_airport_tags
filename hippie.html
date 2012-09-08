@@ -122,93 +122,6 @@
     
     <!--- Start of LIST of items, the jQuery plugin Masonry uses id "list" as container and treats id "airport" as the children divs to move around.--->
     <div id="list">
-        <div id="airport" class="airport">
-            <div id="code">AKL</div>
-            <div class="details">
-                <div id="name1">Auckland Airport (AKL) in Auckland, New Zealand.</div>
-                <div id="name2">Auckland Airport</div>
-                <div id="location">Mangere, New Zealand</div>
-            </div>
-        </div>
-        <div id="airport" class="airport">
-            <div id="code">AKL</div>
-            <div class="details" style="display:block;">
-                <div id="name1">Auckland Airport (AKL) in Auckland, New Zealand.</div>
-                <div id="name2">Auckland Airport</div>
-                <div id="location">Mangere, New Zealand</div>
-            </div>
-        </div>
-        <div id="airport" class="airport">
-            <div id="code">AKL</div>
-            <div class="details">
-                <div id="name1">Auckland asdfearcasdfaerasdf</div>
-                <div id="name2">Auckland Airport</div>
-                <div id="location">Mangere, New Zealand</div>
-            </div>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
-        <div id="airport" class="airport">
-            <span id="code">AKL</span>
-        </div>
     </div>
 </div>
 <div id="hideSearch"></div>
@@ -263,7 +176,8 @@
       format: "json",
     }),
     yqlUrl = "http://query.yahooapis.com/v1/public/yql",
-    codeToInfo = {};
+    codeToInfo = {},
+    codesAlpha = [];
 
     // if no CORS support then turn into a JSONP request
     if (!$.support.cors) {
@@ -274,23 +188,46 @@
       data: yqlParams,
       dataType: 'json',
       success: function(data, textStatus, jqXHR) {
-        var $airportDivs = $('#list .airport');
+        var $airportList = $('#list'),
+        counter = 0;
 
         $.each( data.query.results.json.json, function(i, e) {
           codeToInfo[e.code] = { name: e.name, location: e.location };
         });
 
-        $airportDivs.each(function(i, e) {
-          var $code = $(e).find('#code'),
-          $name1 = $(e).find('#name1'),
-          $name2 = $(e).find('#name2'),
-          $location = $(e).find('#location');
+        codesAlpha = Object.keys(codeToInfo).sort();
 
-          $code.text(data.query.results.json.json[i].code);
-          $name1.text("(no Stack Exchange data yet)");
-          $name2.text(data.query.results.json.json[i].name);
-          $location.text(data.query.results.json.json[i].location);
+        $.each(codesAlpha, function(i, key) {
+          var obj = codeToInfo[key];
+          $('<div>', {
+            class: 'airport',
+            id: 'airport',
+            click: function () {
+              $(this).toggleClass("opendetails");
+              $('#list').masonry('reload');
+            },
+            html: $('<div>', {
+              id: 'code',
+            }).text(key)
+            .add($('<div>', {
+              class : 'details',
+              html : $('<div>', {
+                id: 'name1'
+              }).text('(no Stack Exchange data yet)')
+              .add($('<div>', {
+                id: 'name2'
+              }).text(obj.name))
+              .add($('<div>', {
+                id: 'location'
+              }).text(obj.location))
+            }))
+          }).appendTo($airportList);
+
+          if (++counter >= 24) {
+            throw new Error('enough!');
+          }
         });
+        
       },
       error: function(jqXHR, textStatus, errorThrown) {
         console.log('error', [textStatus, errorThrown]);
