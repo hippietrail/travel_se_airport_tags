@@ -188,11 +188,11 @@
     synsPromise;
 
     // if no CORS support then turn into a JSONP request
-    if (!$.support.cors) {
-      yqlParams.callback = '?';
-    }
+    //if (!$.support.cors) {
+    //  yqlParams.callback = '?';
+    //}
 
-    riobardPromise = $.ajax(yqlUrl, {
+    riobardPromise = $.ajax(yqlUrl + ($.support.cors ? '' : '?callback=?'), {
       data: yqlParams,
       dataType: 'json',
       success: function(data, textStatus, jqXHR) {
@@ -211,7 +211,7 @@
       filter: '!6UYchthPa7thu'
     });
 
-    tagsPromise = $.ajax(tagsUrl, {
+    tagsPromise = $.ajax(tagsUrl + ($.support.cors ? '' : '?callback=?'), {
       data: tagsParams,
       dataType: 'json',
       success: function(data, textStatus, jqXHR) {
@@ -229,7 +229,7 @@
       filter: '!6TO3Ao4saxLAm'
     });
 
-    synsPromise = $.ajax(synsUrl, {
+    synsPromise = $.ajax(synsUrl + ($.support.cors ? '' : '?callback=?'), {
       data: synsParams,
       dataType: 'json',
       success: function(data, textStatus, jqXHR) {
@@ -272,7 +272,7 @@
           filter: '!n6Tm_aay8D'
         });
 
-        var wikisPromise = $.ajax(wikisUrl, {
+        var wikisPromise = $.ajax(wikisUrl + ($.support.cors ? '' : '?callback=?'), {
           data: wikisParams,
           dataType: 'json',
           success: function(data, textStatus, jqXHR) {
@@ -314,7 +314,7 @@
             }).appendTo($airportList);
         }
       
-      }, function whenBad(a, c, c) {
+      }, function whenBad(a, b, c) {
         console.log('when bad!', a, b, c);
       });
 
