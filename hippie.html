@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Travel Stack Exchange airport tag verification tool</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600|Merriweather:400,300,700' rel='stylesheet' type='text/css'/>
+<link rel="shortcut icon" href="http://cdn.sstatic.net/travel/img/favicon.ico">
 <style type="text/css">
 	body { margin:0px; font-family:'Open Sans', sans-serif; }
 	h1 { font-family: 'Merriweather', serif; font-weight:300; font-size:24pxpx;  letter-spacing:1px; line-height:28px; text-shadow:0px 5px 5px RGBA(255,255,255,0.3); color:white;	}
@@ -177,62 +178,146 @@
     }),
     yqlUrl = "http://query.yahooapis.com/v1/public/yql",
     codeToInfo = {},
-    codesAlpha = [];
+    codesAlpha = [],
+    tagsUrl,
+    tagsParams,
+    synsUrl,
+    synsParams,
+    riobardPromise,
+    tagsPromise,
+    synsPromise;
 
     // if no CORS support then turn into a JSONP request
     if (!$.support.cors) {
       yqlParams.callback = '?';
     }
 
-    $.ajax(yqlUrl, {
+    riobardPromise = $.ajax(yqlUrl, {
       data: yqlParams,
       dataType: 'json',
       success: function(data, textStatus, jqXHR) {
-        var $airportList = $('#list'),
-        counter = 0;
+        console.log('riobard/yql success', [data, textStatus]);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('riobard/yql error', [textStatus, errorThrown]);
+      }
+    });
 
-        $.each( data.query.results.json.json, function(i, e) {
+    tagsUrl = 'http://api.stackexchange.com/2.1/tags';
+    tagsParams = $.param({
+      pagesize: 100,
+      page: 4,
+      site: 'travel',
+      filter: '!6UYchthPa7thu'
+    });
+
+    tagsPromise = $.ajax(tagsUrl, {
+      data: tagsParams,
+      dataType: 'json',
+      success: function(data, textStatus, jqXHR) {
+        console.log('tags success', [data, textStatus]);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('tags error', [textStatus, errorThrown]);
+      }
+    });
+
+    synsUrl = 'http://api.stackexchange.com/2.1/tags/synonyms'
+    synsParams = $.param({
+      pagesize: 100,
+      site: 'travel',
+      filter: '!6TO3Ao4saxLAm'
+    });
+
+    synsPromise = $.ajax(synsUrl, {
+      data: synsParams,
+      dataType: 'json',
+      success: function(data, textStatus, jqXHR) {
+        console.log('syns success', [data, textStatus]);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('syns error', [textStatus, errorThrown]);
+      }
+    });
+
+    $.when(riobardPromise, tagsPromise, synsPromise).then(
+      function whenGood(riobard, tags, syns) {
+        var $airportList = $('#list'),
+        ourTags = []; 
+
+        console.log('riobard', riobard, 'tags', tags, 'syns', syns);
+
+        $.each( riobard[0].query.results.json.json, function(i, e) {
           codeToInfo[e.code] = { name: e.name, location: e.location };
         });
 
         codesAlpha = Object.keys(codeToInfo).sort();
 
-        $.each(codesAlpha, function(i, key) {
-          var obj = codeToInfo[key];
-          $('<div>', {
-            class: 'airport',
-            id: 'airport',
-            click: function () {
-              $(this).toggleClass("opendetails");
-              $('#list').masonry('reload');
-            },
-            html: $('<div>', {
-              id: 'code',
-            }).text(key)
-            .add($('<div>', {
-              class : 'details',
-              html : $('<div>', {
-                id: 'name1'
-              }).text('(no Stack Exchange data yet)')
-              .add($('<div>', {
-                id: 'name2'
-              }).text(obj.name))
-              .add($('<div>', {
-                id: 'location'
-              }).text(obj.location))
-            }))
-          }).appendTo($airportList);
+        $.each(tags[0].items, function(i, tag) {
+          if (tag.name.match(/^[a-z][a-z][a-z]$/)) {
+            var codeL = tag.name,
+            codeU = codeL.toUpperCase(),
+            obj = codeU in codeToInfo ? codeToInfo[codeU] : {name: '?', location: '?'};
 
-          if (++counter >= 24) {
-            throw new Error('enough!');
+            ourTags.push(tag.name);
+
+            createCell(codeL, codeU, obj);
           }
         });
-        
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log('error', [textStatus, errorThrown]);
-      }
-    });
+
+        var wikisUrl = 'https://api.stackexchange.com/2.1/tags/' + ourTags.join('%3B') + '/wikis';
+        var wikisParams = $.param({
+          pagesize: 100,
+          site: 'travel',
+          filter: '!n6Tm_aay8D'
+        });
+
+        var wikisPromise = $.ajax(wikisUrl, {
+          data: wikisParams,
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR) {
+            console.log('wikis success', [data, textStatus]);
+            $.each(data.items, function(i, item) {
+              var $cell = $('.iata-' + item.tag_name + ' #name1');
+
+              $cell.text(item.excerpt);
+            });
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.log('wikis error', [textStatus, errorThrown]);
+          }
+        });
+
+        function createCell(codeL, codeU, obj) {
+            $('<div>', {
+              class: 'airport iata-' + codeL,
+              id: 'airport',
+              click: function () {
+                $(this).toggleClass("opendetails");
+                $('#list').masonry('reload');
+              },
+              html: $('<div>', {
+                id: 'code',
+              }).text(codeU)
+              .add($('<div>', {
+                class : 'details',
+                html : $('<div>', {
+                  id: 'name1'
+                }).text('(no Stack Exchange data yet)')
+                .add($('<div>', {
+                  id: 'name2'
+                }).text('name' in obj ? obj.name : '?'))
+                .add($('<div>', {
+                  id: 'location'
+                }).text('location' in obj ? obj.location : '?'))
+              }))
+            }).appendTo($airportList);
+        }
+      
+      }, function whenBad(a, c, c) {
+        console.log('when bad!', a, b, c);
+      });
+
   });
 </script>
 </body>
