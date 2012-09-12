@@ -29,8 +29,12 @@
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 	}
 	#whitebg { position:absolute; top:350px; background-color:white; width:100%; padding-bottom:20px; }
-	#hideSearch { position:fixed; top:0px; left:0px; width:100%; height:100%; text-align:center; display:none; }
-	#searchDialog { width:270px; height:300px; position:absolute; background-color:white; left:50%; margin-left:-135px; top:50%; margin-top:-150px; border-radius:15px; border:1px solid RGBA(0,0,0,0.2); -webkit-box-shadow: 0px 0px 10px 1px rgba(100, 50, 0, 0.9); box-shadow: 0px 0px 10px 1px rgba(100, 50, 0, 0.9); display:none; }
+	
+	#hideLegend { position:fixed; top:0px; left:0px; width:100%; height:100%; text-align:center; display:none; background-color:rgba(0,0,0,0.5); z-index:100; }
+	#hideLegend #legend { width:300px; height:450px; position:absolute; background-color:white; left:50%; margin-left:-150px; top:50%; margin-top:-225px; border-radius:5px; padding:5px; box-shadow: 0px 0px 10px 1px rgba(150, 100, 0, 0.9);  text-align:left; font-size:13px; }
+	#legend span { vertical-align:super; font-size:12px; }
+	#legend .exairport { position:absolute; padding:5px; cursor:default; border:1px solid RGBA(0,0,70,0.6); border-radius:2px; margin:3px; width:78px; text-align:center; -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); height:22px; overflow:hidden; background-color:white; font-size:16px; font-weight:600; }
+	#legend .exopendetails { width:278px; height:auto; box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.4); font-size:14px; }
 	
 	.masonry,
 	.masonry .masonry-brick {
@@ -57,29 +61,46 @@
 			  transition-property: left, right, top;
 	}
 	
-	#list { position:absolute; left:50%; margin-left:-45%; width:90%; top:5px; font-weight:300; }
-	#list .details {  text-align:left; }
-	#list #code { font-weight:600; height:25px; line-height:25px; }
-	#list #name1 { margin-bottom:4px; }
+	#list { position:absolute; left:50%; margin-left:-45%; width:90%; top:5px; font-weight:300; line-height:16px; }
+	#list span { vertical-align:super; font-size:12px; }
+	#list .details { position:relative; z-index:5; text-align:left; }
+	#list #code { font-weight:600; height:26px; margin-top:-1px; }
+	#list #name1 { margin-bottom:6px; }
+	#list #location { margin-bottom:6px; }
 	
-	.airport { float:left; padding:5px; cursor:pointer; border:1px solid RGBA(0,0,70,0.6); border-radius:2px; margin:3px; width:78px; text-align:center; -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); height:22px; overflow:hidden; background-color:white; }
-	.opendetails { width:278px; height:auto; -webkit-box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.4); font-size:14px; }
-	.airport:hover { -webkit-box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.6); box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.6); border:1px solid RGBA(250,150,1,0.8); }
+	.airport { float:left; padding:5px; cursor:default; border:1px solid RGBA(0,0,70,0.6); border-radius:2px; margin:3px; width:78px; text-align:center; -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); height:22px; overflow:hidden; background-color:white; z-index:5; }
+	.opendetails { width:278px; height:auto; box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.4); font-size:14px; }
+	.airport:hover { box-shadow: 0px 0px 3px 0px rgba(100, 50, 0, 0.6); border:1px solid RGBA(250,150,1,0.8); }
+	.airport:hover #linkscontainer { border-top:1px solid RGBA(250,150,1,0.8); }
+	
+	.offenseContainer { position:absolute; width:100%; height:100%; padding-bottom:1px; padding-right:1px; margin:-6px; border-radius:3px; z-index:4; }
+	.offenseOne { box-shadow: 20px 20px 1px -20px red inset; }
+	.offenseTwo { box-shadow: 20px -20px 1px -21px purple inset; }
+	.offenseThree { box-shadow: -19px -19px 1px -20px green inset; }
+	.offenseFour { box-shadow: -20px 20px 1px -21px blue inset; }
 	
 	#btncutoff { position:relative; width:100%; left:0px; top:0px; height:35px; overflow:hidden; }
 	#btnoutercontainer { float:left; position:relative; top:0px; left:50%; height:35px; }
 	#btninnercontainer { position:relative; margin-left:-50%; top:5px; }
-	.btn,#searchInput { float:left; position:relative; padding:5px; cursor:pointer; border:1px solid RGBA(0,0,70,0.6); border-radius:2px; text-align:center; -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); line-height:18px; font-size:14px; margin-left:6px; background-color:white; height:18px; }
-	.btn:hover { -webkit-box-shadow: 0px 0px 3px 0px rgba(100, 0, 100, 0.6); box-shadow: 0px 0px 3px 0px rgba(100, 0, 100, 0.6); border:1px solid RGBA(1,150,250,0.8); }
+	.btn,#searchInput { float:left; position:relative; padding:5px; cursor:pointer; border:1px solid RGBA(0,0,70,0.6); border-radius:2px; text-align:center; box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4); line-height:18px; font-size:14px; margin-left:6px; background-color:white; height:18px; }
+	.btn:hover { box-shadow: 0px 0px 3px 0px rgba(100, 0, 100, 0.6); border:1px solid RGBA(1,150,250,0.8); }
 	
 	#btnSearch { padding-bottom:0px; padding-top:0px; height:28px; }
 	.btn #btnSearch:hover { }
-	#searchInput { width:100px; font-size:14px; font-family:'Open Sans',sans-serif; border-radius:0px; border:1px solid RGBA(250,150,0,0.6);
-	-webkit-box-shadow: 0px 0px 4px 0px rgba(100, 0, 100, 0.6) inset; box-shadow: 0px 0px 4px 0px rgba(100, 0, 100, 0.6) inset; }
+	#searchInput { width:100px; font-size:14px; font-family:'Open Sans',sans-serif; border-radius:0px; border:1px solid RGBA(250,150,0,0.6); box-shadow: 0px 0px 4px 0px rgba(100, 0, 100, 0.6) inset; }
 	
-	#progressbar { background-color:black; position:fixed; bottom:3px; width:90%; left:5%; height:2.5%; min-height:15px; max-height:35px; box-shadow: 0px 10px 10px -3px #CCC inset;  overflow:hidden; border-radius:8px; }
+	#progressbar { background-color:black; position:fixed; bottom:3px; width:90%; left:5%; height:2.5%; min-height:15px; max-height:35px; box-shadow: 0px 10px 10px -3px #CCC inset; overflow:hidden; border-radius:8px; }
 	#progress { position:absolute; width:70%; height:100%; background-color:RGBA(0,250,0,0.4); border-radius:8px; }
-	#loadingtext { position:absolute; width:100%; font-size:10px; text-align:center; font-weight:600; letter-spacing:5px; color:white; text-shadow:0px 2px 3px black, 0px 2px 3px black, 0px 2px 3px black; }
+	#loadingtext { position:absolute; width:100%; height:100%; font-size:10px; text-align:center; font-weight:600; letter-spacing:5px; color:white; text-shadow:0px 2px 3px black, 0px 2px 3px black, 0px 2px 3px black; margin-top:-3px; }
+	
+	#linkscontainer { margin-top:5px; padding-top:4px; border-top:1px solid RGBA(150,50,1,0.8); }
+	#linkscontainer a { border:0px; }
+	#linkscontainer a #linkimage { margin-right:3px; }
+	#linkscontainer a:hover #linkimage { box-shadow: 0px 0px 6px 1px rgb(10, 180, 0); margin-right:3px; }
+	#trSElinkContainer { border-bottom:1px dashed RGB(200,200,200); margin-bottom:4px; font-size:12px; }
+	#trSElinkContainer a { vertical-align:top; margin-left:3px; margin-right:3px; }
+	#trSElinkContainer a:hover { text-shadow: 0px 0px 6px rgb(10, 180, 0),0px 0px 6px rgb(10, 180, 0); }
+	
 	
 	/* Following styles only used with browser windows above a width of 769 pixels (desktops+) */
 	@media only screen and (min-width: 769px) {
@@ -108,7 +129,7 @@
     <div id="title"><h1>Travel Stack Exchange airport tag verification tool</h1></div>
     <div id="stats">
         <div class="innercontainer">
-            <div>Total number of tags: <span id="st_tags">x</span></div><div style="float:right;">Number of 3-letter tags: <span id="st_3letter">x</span></div><div style="float:right;">Number with good wiki excerpt: <span id="st_goodwiki">x</span></div><div>Number with bad wiki excerpt: <span id="st_badwiki">x</span></div><div style="float:right;">Number with no wiki excerpt: <span id="st_nowiki">x</span></div><div>Number of valid IATA airport codes: <span id="st_validiata">x</span></div><div style="float:right;">Number of invalid IATA airport codes: <span id="st_invalidiata">x</span></div><div style="float:left;">Total number of airports: <span id="st_total">x</span></div>
+            <div>Total number of tags: <span id="st_tags">x</span></div><div style="float:right;">Number of 3-letter tags: <span id="st_3letter">x</span></div><div style="float:right;">Number of good wiki excerpts: <span id="st_goodwiki">x</span></div><div>Number of bad wiki excerpts: <span id="st_badwiki">x</span></div><div style="float:right;">Number of excerpts with no wiki: <span id="st_nowiki">x</span></div><div>Valid IATA airport codes: <span id="st_validiata">x</span></div><div style="float:right;">Invalid IATA airport codes: <span id="st_invalidiata">x</span></div><div style="float:left;">Total number of airports: <span id="st_total">x</span></div>
         </div>
 	</div>
     <div class="bottom_fade"></div>
@@ -124,26 +145,138 @@
 	<div id="btncutoff"><div id="btnoutercontainer"><div id="btninnercontainer">
         <div id="btnShowAll" class="btn">Expand all</div>
         <div id="btnShowNone" class="btn">Close all</div>
-        <div id="btnShowOffending" class="btn">Show offending</div>
+        <div id="btnShowFilter" class="btn">Filter</div>
+        <div id="btnShowLegend" class="btn">Legend</div>
         <div id="btnLoad" class="btn">Load tags</div>
         <input type="text" id="searchInput" value="Search..." />
     </div></div></div>
     <div style="clear:both;"></div>
     
-    <!--- Start of LIST of items, the jQuery plugin Masonry uses id "list" as container and treats id "airport" as the children divs to move around.--->
+    <!--- Start of LIST of items, the jQuery plugin Masonry uses id "list" as container and treats id "airport" as the children divs to move around.
+    
+	*** FOR REFERENCE, what the airport entries should contain after javascript has populated:
+
+    --  <div id="airport" class="airport">
+    *** The airport ID is used as child element in Masonry, jQuery plugin.
+    
+    --    	<div id="offenseContainerOne" class="offenseContainer"></div><div id="offenseContainerTwo" class="offenseContainer"></div><div id="offenseContainerThree" class="offenseContainer"></div><div id="offenseContainerFour" class="offenseContainer"></div> 
+    *** Assign classes offenseOne to offenseFour to the divs to add color icon in a corner for corresponding offense.
+    
+    
+    --      <div id="code">EXP<span>(23)</span></div>
+    *** The 3-letter tag in question and in parenthesis the number of times the tag is used on travelSE.
+    
+    --      <div class="details">
+    *** Div to left-align text and place the detail contents above the Offense divs with z of 5.
+    
+    --          <div id="name1">Experimental (EXP), ExampleVille, Experiland.</div>
+    *** Name taken from travelSE.
+    
+    --          <div id="name2">Experimental</div>
+    --          <div id="location">ExampleVille, Experiland</div>
+    *** Name and location from other source.
+    
+    --          <div id="geo">33.3334&#176, -66.6667&#176, 5m. GMT +5</div>
+    *** Geo information.
+    
+    --          <div id="linkscontainer">
+    *** Container that changes top border on hover of said airport.
+    
+    --              <div id="trSElinkContainer">
+    --                  <img src="http://cdn.sstatic.net/travel/img/favicon.ico" id="linkimage">
+    --                  <a href="http://travel.stackexchange.com">Info</a>
+    --                  <a href="http://travel.stackexchange.com">Tagged</a>
+    --                  <a href="http://travel.stackexchange.com">Edit</a>
+    --              </div>
+    *** Links to the different travelSE pages for said tag.
+    
+    --              <a href="http://www.wikipedia.com"><img src="http://upload.wikimedia.org/wikipedia/commons/2/2b/Wikipedia_banner.png" height="15" width="80" alt="Wikipedia logo. &copy; Wikimedia Foundation" id="linkimage"></a>
+    --              <a href="http://www.ourairports.com"><img src="http://www.ourairports.com/images/plane.png" width="16px" height="15px" id="linkimage"></a>
+    *** Links to other sites for said tag.
+    
+    --          </div>
+    --      </div>
+    --	</div>
+    --->
     <div id="list">
+        <div id="airport" class="airport">
+        	<div id="offenseContainerOne" class="offenseContainer offenseOne"></div><div id="offenseContainerTwo" class="offenseContainer"></div><div id="offenseContainerThree" class="offenseContainer offenseThree"></div><div id="offenseContainerFour" class="offenseContainer"></div>
+            <div id="code">EXP<span>(23)</span></div>
+            <div class="details">
+                <div id="name1">Experimental (EXP), ExampleVille, Experiland.</div>
+                <div id="name2">Experimental</div>
+                <div id="location">ExampleVille, Experiland</div>
+                <div id="geo">33.3334&#176, -66.6667&#176, 5m. GMT +5</div>
+                <div id="linkscontainer">
+                    <div id="trSElinkContainer">
+                        <img src="http://cdn.sstatic.net/travel/img/favicon.ico" id="linkimage">
+                        <a href="http://travel.stackexchange.com">Info</a>
+                        <a href="http://travel.stackexchange.com">Tagged</a>
+                        <a href="http://travel.stackexchange.com">Edit</a>
+                    </div>
+                    <a href="http://www.wikipedia.com"><img src="http://upload.wikimedia.org/wikipedia/commons/2/2b/Wikipedia_banner.png" height="15" width="80" alt="Wikipedia logo. &copy; Wikimedia Foundation" id="linkimage"></a>
+                    <a href="http://www.ourairports.com"><img src="http://www.ourairports.com/images/plane.png" width="16px" height="15px" id="linkimage"></a>
+                </div>
+            </div>
+        </div>
+        
+        <div id="airport" class="airport">
+        	<div id="offenseContainerOne" class="offenseContainer offenseOne"></div><div id="offenseContainerTwo" class="offenseContainer"></div><div id="offenseContainerThree" class="offenseContainer offenseThree"></div><div id="offenseContainerFour" class="offenseContainer"></div>
+            <div id="code">EXP<span>(23)</span></div>
+            <div class="details">
+                <div id="name1">Experimental (EXP), ExampleVille, Experiland.</div>
+                <div id="name2">Experimental</div>
+                <div id="location">ExampleVille, Experiland</div>
+                <div id="geo">66.67&#176, 66.67&#176, 5m. GMT +5</div>
+                <div id="linkscontainer">
+                    <div id="trSElinkContainer">
+                        <img src="http://cdn.sstatic.net/travel/img/favicon.ico" id="linkimage">
+                        <a href="http://travel.stackexchange.com">Info</a>
+                        <a href="http://travel.stackexchange.com">Tagged</a>
+                        <a href="http://travel.stackexchange.com">Edit</a>
+                    </div>
+                    <a href="http://www.wikipedia.com"><img src="http://upload.wikimedia.org/wikipedia/commons/2/2b/Wikipedia_banner.png" height="15" width="80" alt="Wikipedia logo. &copy; Wikimedia Foundation" id="linkimage"></a>
+                    <a href="http://www.ourairports.com"><img src="http://www.ourairports.com/images/plane.png" width="16px" height="15px" id="linkimage"></a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!--- Unused search dialog divs
-<div id="hideSearch"></div>
-<div id="searchDialog">Advanced Search</div>
---->
-
+<!----------------------------------PROGRESS BAR------------------------------->
 <div id="progressbar">
 	<div id="progress"></div>
 	<div id="loadingtext">Loading...</div>
 </div>
+
+
+<!------------------------------------LEGEND----------------------------------->  
+<div id="hideLegend">
+	<div id="legend">	
+    	<div id="exairport" class="exairport">
+        	<div id="offenseContainerOne" class="offenseContainer offenseOne"></div><div id="offenseContainerTwo" class="offenseContainer offenseTwo"></div><div id="offenseContainerThree" class="offenseContainer offenseThree"></div><div id="offenseContainerFour" class="offenseContainer offenseFour"></div>
+            <div id="code">EXP<span>(23)</span></div>
+        </div>
+        <div style="border-bottom:1px dashed grey; padding-bottom:3px;"><div style="position:relative; width:100px; height:35px; float:left;"></div>
+        Clickable airport tag and the number of uses on travelSE.<br>
+        Red marks....<br>
+        Blue marks....<br>
+        Purple marks....<br>
+        Green marks....
+        </div>
+        <div id="exairport" class="exairport" style="position:relative; height:auto; width:auto; font-size:13px; text-align:left; font-weight:200; margin-left:5px; margin-top:7px;">
+            <div id="name1" style="margin-bottom:4px;">Experimental (EXP), ExampleVille, Experiland.</div>
+            <div id="name2">Experimental</div>
+            <div id="location" style="margin-bottom:4px;">ExampleVille, Experiland</div>
+            <div id="geo">33.3334&#176, -66.6667&#176, 5m. GMT +5</div>
+        </div>
+        <div style="border-bottom:1px dashed grey; padding-bottom:3px; text-align:justify;">
+        Name from the travelSE tag followed by the name and location from the reference source. And longitude, latitude, altitude as well as timezone.
+        </div>
+    </div>
+</div>
+
+
 
 <script id="jqs" type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="http://masonry.desandro.com/jquery.masonry.min.js"></script>
@@ -154,10 +287,23 @@
 		  itemSelector: '#airport',
 		  columnWidth: 50
 		});
+        $("#loadingtext").css("font-size",parseInt($("#progressbar").css("height"))-5);
 	});
   $(".airport").click(function () {
       $(this).toggleClass("opendetails");
 	  $('#list').masonry('reload');
+  });
+  $(window).resize(function() {
+      	$("#loadingtext").css("font-size",parseInt($("#progressbar").css("height"))-5);
+  });
+  $("#hideLegend").click(function () {
+      $(this).css("display","none");
+  });
+  $("#btnShowLegend").click(function () {
+      $("#hideLegend").css("display","block");
+  });
+  $("#linkscontainer").click(function (e) {
+    e.stopPropagation();
   });
   $("#btnShowAll").click(function () {
       $(".airport").addClass("opendetails");
@@ -178,6 +324,8 @@
             $(this).val("Search...");
         }
   });
+
+
 
   ///////////////////////////////////////
 
